@@ -21,8 +21,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 load_dotenv()
 
-# Your OpenAI API key (or other LLM API key)
-os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]  # Your OpenAI API key (or other LLM API key)
+os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"] 
 
 # Configure logging
 logging.basicConfig(filename="job_agent.log", level=logging.INFO,
@@ -70,8 +69,8 @@ def search_linkedin_jobs(job_title, job_location, experience_level="All", num_re
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--disable-software-rasterizer")
     driver_manager = ChromeDriverManager()
-    driver_path = driver_manager.install()  # Install and get the path
-    logging.debug(f"ChromeDriver path: {driver_path}")  # Log the path
+    driver_path = driver_manager.install()  
+    logging.debug(f"ChromeDriver path: {driver_path}")
 
     service = Service(driver_path)  # Use the explicit path
     driver = webdriver.Chrome(service=service, options=chrome_options) # Ensure ChromeDriver is in your PATH
@@ -79,16 +78,16 @@ def search_linkedin_jobs(job_title, job_location, experience_level="All", num_re
     search_query = f"{job_title} at {job_location}"
     linkedin_url = f"https://www.linkedin.com/jobs/search/?keywords={job_title}&location={job_location}"
 
-    if experience_level != "All":  # add experience level filter to the url
+    if experience_level != "All": 
 
          linkedin_url += f"&f_E={experience_level}"
 
 
     try:
         driver.get(linkedin_url)
-        logging.info(f"Searching LinkedIn with URL: {linkedin_url}")  # log the url
+        logging.info(f"Searching LinkedIn with URL: {linkedin_url}") 
 
-        # Wait for results to load (adjust the timeout as needed)
+        
         WebDriverWait(driver, 30).until(
             lambda driver: len(driver.find_elements(By.CLASS_NAME, "job-card-container")) >= num_results
         )

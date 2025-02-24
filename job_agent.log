@@ -1,0 +1,54 @@
+2025-02-24 19:49:19,022 - INFO - Successfully extracted text from resume.
+2025-02-24 19:49:26,330 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level
+2025-02-24 19:49:36,526 - ERROR - Error searching LinkedIn: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00007FF71B016EE5+28773]
+	(No symbol) [0x00007FF71AF825D0]
+	(No symbol) [0x00007FF71AE18FAA]
+	(No symbol) [0x00007FF71AE6F286]
+	(No symbol) [0x00007FF71AE6F4BC]
+	(No symbol) [0x00007FF71AEC2A27]
+	(No symbol) [0x00007FF71AE9728F]
+	(No symbol) [0x00007FF71AEBF6F3]
+	(No symbol) [0x00007FF71AE97023]
+	(No symbol) [0x00007FF71AE5FF5E]
+	(No symbol) [0x00007FF71AE611E3]
+	GetHandleVerifier [0x00007FF71B36422D+3490733]
+	GetHandleVerifier [0x00007FF71B37BA13+3586963]
+	GetHandleVerifier [0x00007FF71B37144D+3544525]
+	GetHandleVerifier [0x00007FF71B0DC9AA+838442]
+	(No symbol) [0x00007FF71AF8D01F]
+	(No symbol) [0x00007FF71AF895E4]
+	(No symbol) [0x00007FF71AF89786]
+	(No symbol) [0x00007FF71AF78CB9]
+	BaseThreadInitThunk [0x00007FFC2A2CE8D7+23]
+	RtlUserThreadStart [0x00007FFC2B37BF2C+44]
+Traceback (most recent call last):
+  File "C:\Users\sivap\Desktop\myagent1\main_function.py", line 84, in search_linkedin_jobs
+    WebDriverWait(driver, 10).until(
+  File "C:\Users\sivap\Desktop\myagent1\myenv\Lib\site-packages\selenium\webdriver\support\wait.py", line 146, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00007FF71B016EE5+28773]
+	(No symbol) [0x00007FF71AF825D0]
+	(No symbol) [0x00007FF71AE18FAA]
+	(No symbol) [0x00007FF71AE6F286]
+	(No symbol) [0x00007FF71AE6F4BC]
+	(No symbol) [0x00007FF71AEC2A27]
+	(No symbol) [0x00007FF71AE9728F]
+	(No symbol) [0x00007FF71AEBF6F3]
+	(No symbol) [0x00007FF71AE97023]
+	(No symbol) [0x00007FF71AE5FF5E]
+	(No symbol) [0x00007FF71AE611E3]
+	GetHandleVerifier [0x00007FF71B36422D+3490733]
+	GetHandleVerifier [0x00007FF71B37BA13+3586963]
+	GetHandleVerifier [0x00007FF71B37144D+3544525]
+	GetHandleVerifier [0x00007FF71B0DC9AA+838442]
+	(No symbol) [0x00007FF71AF8D01F]
+	(No symbol) [0x00007FF71AF895E4]
+	(No symbol) [0x00007FF71AF89786]
+	(No symbol) [0x00007FF71AF78CB9]
+	BaseThreadInitThunk [0x00007FFC2A2CE8D7+23]
+	RtlUserThreadStart [0x00007FFC2B37BF2C+44]
+

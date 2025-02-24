@@ -52,3 +52,338 @@ Stacktrace:
 	BaseThreadInitThunk [0x00007FFC2A2CE8D7+23]
 	RtlUserThreadStart [0x00007FFC2B37BF2C+44]
 
+2025-02-24 20:09:12,466 - INFO - Successfully extracted text from resume.
+2025-02-24 20:09:12,479 - INFO - ====== WebDriver manager ======
+2025-02-24 20:09:13,397 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:09:13,458 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:09:13,530 - INFO - There is no [win64] chromedriver "133.0.6943.126" for browser google-chrome "133.0.6943" in cache
+2025-02-24 20:09:13,530 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:09:13,691 - INFO - WebDriver version 133.0.6943.126 selected
+2025-02-24 20:09:13,695 - INFO - Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/133.0.6943.126/win32/chromedriver-win32.zip
+2025-02-24 20:09:13,695 - INFO - About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/133.0.6943.126/win32/chromedriver-win32.zip
+2025-02-24 20:09:13,829 - INFO - Driver downloading response is 200
+2025-02-24 20:09:15,298 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:09:16,548 - INFO - Driver has been saved in cache [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126]
+2025-02-24 20:09:23,980 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level
+2025-02-24 20:09:34,185 - ERROR - Error searching LinkedIn: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00FF0283+25139]
+	(No symbol) [0x00F7B234]
+	(No symbol) [0x00E504A3]
+	(No symbol) [0x00E98338]
+	(No symbol) [0x00E9868B]
+	(No symbol) [0x00EE0F62]
+	(No symbol) [0x00EBCF84]
+	(No symbol) [0x00EDE6E1]
+	(No symbol) [0x00EBCD36]
+	(No symbol) [0x00E8BD29]
+	(No symbol) [0x00E8D064]
+	GetHandleVerifier [0x012FB143+3215603]
+	GetHandleVerifier [0x013122BA+3310186]
+	GetHandleVerifier [0x0130C4D2+3286146]
+	GetHandleVerifier [0x01089C80+654384]
+	(No symbol) [0x00F845BD]
+	(No symbol) [0x00F814A8]
+	(No symbol) [0x00F81647]
+	(No symbol) [0x00F73D20]
+	BaseThreadInitThunk [0x76675D49+25]
+	RtlInitializeExceptionChain [0x778DCDEB+107]
+	RtlGetAppContainerNamedObjectPath [0x778DCD71+561]
+Traceback (most recent call last):
+  File "C:\Users\sivap\Desktop\myagent1\main_function.py", line 87, in search_linkedin_jobs
+    WebDriverWait(driver, 10).until(
+  File "C:\Users\sivap\Desktop\myagent1\myenv\Lib\site-packages\selenium\webdriver\support\wait.py", line 146, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00FF0283+25139]
+	(No symbol) [0x00F7B234]
+	(No symbol) [0x00E504A3]
+	(No symbol) [0x00E98338]
+	(No symbol) [0x00E9868B]
+	(No symbol) [0x00EE0F62]
+	(No symbol) [0x00EBCF84]
+	(No symbol) [0x00EDE6E1]
+	(No symbol) [0x00EBCD36]
+	(No symbol) [0x00E8BD29]
+	(No symbol) [0x00E8D064]
+	GetHandleVerifier [0x012FB143+3215603]
+	GetHandleVerifier [0x013122BA+3310186]
+	GetHandleVerifier [0x0130C4D2+3286146]
+	GetHandleVerifier [0x01089C80+654384]
+	(No symbol) [0x00F845BD]
+	(No symbol) [0x00F814A8]
+	(No symbol) [0x00F81647]
+	(No symbol) [0x00F73D20]
+	BaseThreadInitThunk [0x76675D49+25]
+	RtlInitializeExceptionChain [0x778DCDEB+107]
+	RtlGetAppContainerNamedObjectPath [0x778DCD71+561]
+
+2025-02-24 20:10:39,849 - INFO - Successfully extracted text from resume.
+2025-02-24 20:10:39,851 - INFO - ====== WebDriver manager ======
+2025-02-24 20:10:40,783 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:10:40,895 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:10:40,969 - INFO - Driver [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126\chromedriver-win32/chromedriver.exe] found in cache
+2025-02-24 20:10:45,206 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level
+2025-02-24 20:10:55,706 - ERROR - Error searching LinkedIn: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00FF0283+25139]
+	(No symbol) [0x00F7B234]
+	(No symbol) [0x00E504A3]
+	(No symbol) [0x00E98338]
+	(No symbol) [0x00E9868B]
+	(No symbol) [0x00EE0F62]
+	(No symbol) [0x00EBCF84]
+	(No symbol) [0x00EDE6E1]
+	(No symbol) [0x00EBCD36]
+	(No symbol) [0x00E8BD29]
+	(No symbol) [0x00E8D064]
+	GetHandleVerifier [0x012FB143+3215603]
+	GetHandleVerifier [0x013122BA+3310186]
+	GetHandleVerifier [0x0130C4D2+3286146]
+	GetHandleVerifier [0x01089C80+654384]
+	(No symbol) [0x00F845BD]
+	(No symbol) [0x00F814A8]
+	(No symbol) [0x00F81647]
+	(No symbol) [0x00F73D20]
+	BaseThreadInitThunk [0x76675D49+25]
+	RtlInitializeExceptionChain [0x778DCDEB+107]
+	RtlGetAppContainerNamedObjectPath [0x778DCD71+561]
+Traceback (most recent call last):
+  File "C:\Users\sivap\Desktop\myagent1\main_function.py", line 87, in search_linkedin_jobs
+    WebDriverWait(driver, 10).until(
+  File "C:\Users\sivap\Desktop\myagent1\myenv\Lib\site-packages\selenium\webdriver\support\wait.py", line 146, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00FF0283+25139]
+	(No symbol) [0x00F7B234]
+	(No symbol) [0x00E504A3]
+	(No symbol) [0x00E98338]
+	(No symbol) [0x00E9868B]
+	(No symbol) [0x00EE0F62]
+	(No symbol) [0x00EBCF84]
+	(No symbol) [0x00EDE6E1]
+	(No symbol) [0x00EBCD36]
+	(No symbol) [0x00E8BD29]
+	(No symbol) [0x00E8D064]
+	GetHandleVerifier [0x012FB143+3215603]
+	GetHandleVerifier [0x013122BA+3310186]
+	GetHandleVerifier [0x0130C4D2+3286146]
+	GetHandleVerifier [0x01089C80+654384]
+	(No symbol) [0x00F845BD]
+	(No symbol) [0x00F814A8]
+	(No symbol) [0x00F81647]
+	(No symbol) [0x00F73D20]
+	BaseThreadInitThunk [0x76675D49+25]
+	RtlInitializeExceptionChain [0x778DCDEB+107]
+	RtlGetAppContainerNamedObjectPath [0x778DCD71+561]
+
+2025-02-24 20:14:17,839 - INFO - Successfully extracted text from resume.
+2025-02-24 20:14:17,841 - INFO - ====== WebDriver manager ======
+2025-02-24 20:14:18,638 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:14:18,698 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:14:18,784 - INFO - Driver [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126\chromedriver-win32/chromedriver.exe] found in cache
+2025-02-24 20:14:23,090 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level
+2025-02-24 20:14:33,546 - ERROR - Error searching LinkedIn: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00FF0283+25139]
+	(No symbol) [0x00F7B234]
+	(No symbol) [0x00E504A3]
+	(No symbol) [0x00E98338]
+	(No symbol) [0x00E9868B]
+	(No symbol) [0x00EE0F62]
+	(No symbol) [0x00EBCF84]
+	(No symbol) [0x00EDE6E1]
+	(No symbol) [0x00EBCD36]
+	(No symbol) [0x00E8BD29]
+	(No symbol) [0x00E8D064]
+	GetHandleVerifier [0x012FB143+3215603]
+	GetHandleVerifier [0x013122BA+3310186]
+	GetHandleVerifier [0x0130C4D2+3286146]
+	GetHandleVerifier [0x01089C80+654384]
+	(No symbol) [0x00F845BD]
+	(No symbol) [0x00F814A8]
+	(No symbol) [0x00F81647]
+	(No symbol) [0x00F73D20]
+	BaseThreadInitThunk [0x76675D49+25]
+	RtlInitializeExceptionChain [0x778DCDEB+107]
+	RtlGetAppContainerNamedObjectPath [0x778DCD71+561]
+Traceback (most recent call last):
+  File "C:\Users\sivap\Desktop\myagent1\main_function.py", line 89, in search_linkedin_jobs
+    WebDriverWait(driver, 10).until(
+  File "C:\Users\sivap\Desktop\myagent1\myenv\Lib\site-packages\selenium\webdriver\support\wait.py", line 146, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00FF0283+25139]
+	(No symbol) [0x00F7B234]
+	(No symbol) [0x00E504A3]
+	(No symbol) [0x00E98338]
+	(No symbol) [0x00E9868B]
+	(No symbol) [0x00EE0F62]
+	(No symbol) [0x00EBCF84]
+	(No symbol) [0x00EDE6E1]
+	(No symbol) [0x00EBCD36]
+	(No symbol) [0x00E8BD29]
+	(No symbol) [0x00E8D064]
+	GetHandleVerifier [0x012FB143+3215603]
+	GetHandleVerifier [0x013122BA+3310186]
+	GetHandleVerifier [0x0130C4D2+3286146]
+	GetHandleVerifier [0x01089C80+654384]
+	(No symbol) [0x00F845BD]
+	(No symbol) [0x00F814A8]
+	(No symbol) [0x00F81647]
+	(No symbol) [0x00F73D20]
+	BaseThreadInitThunk [0x76675D49+25]
+	RtlInitializeExceptionChain [0x778DCDEB+107]
+	RtlGetAppContainerNamedObjectPath [0x778DCD71+561]
+
+2025-02-24 20:15:01,096 - INFO - Successfully extracted text from resume.
+2025-02-24 20:15:01,097 - INFO - ====== WebDriver manager ======
+2025-02-24 20:15:02,017 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:15:02,084 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:15:02,140 - INFO - Driver [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126\chromedriver-win32/chromedriver.exe] found in cache
+2025-02-24 20:15:06,246 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level
+2025-02-24 20:15:16,451 - ERROR - Error searching LinkedIn: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00FF0283+25139]
+	(No symbol) [0x00F7B234]
+	(No symbol) [0x00E504A3]
+	(No symbol) [0x00E98338]
+	(No symbol) [0x00E9868B]
+	(No symbol) [0x00EE0F62]
+	(No symbol) [0x00EBCF84]
+	(No symbol) [0x00EDE6E1]
+	(No symbol) [0x00EBCD36]
+	(No symbol) [0x00E8BD29]
+	(No symbol) [0x00E8D064]
+	GetHandleVerifier [0x012FB143+3215603]
+	GetHandleVerifier [0x013122BA+3310186]
+	GetHandleVerifier [0x0130C4D2+3286146]
+	GetHandleVerifier [0x01089C80+654384]
+	(No symbol) [0x00F845BD]
+	(No symbol) [0x00F814A8]
+	(No symbol) [0x00F81647]
+	(No symbol) [0x00F73D20]
+	BaseThreadInitThunk [0x76675D49+25]
+	RtlInitializeExceptionChain [0x778DCDEB+107]
+	RtlGetAppContainerNamedObjectPath [0x778DCD71+561]
+Traceback (most recent call last):
+  File "C:\Users\sivap\Desktop\myagent1\main_function.py", line 89, in search_linkedin_jobs
+    WebDriverWait(driver, 10).until(
+  File "C:\Users\sivap\Desktop\myagent1\myenv\Lib\site-packages\selenium\webdriver\support\wait.py", line 146, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00FF0283+25139]
+	(No symbol) [0x00F7B234]
+	(No symbol) [0x00E504A3]
+	(No symbol) [0x00E98338]
+	(No symbol) [0x00E9868B]
+	(No symbol) [0x00EE0F62]
+	(No symbol) [0x00EBCF84]
+	(No symbol) [0x00EDE6E1]
+	(No symbol) [0x00EBCD36]
+	(No symbol) [0x00E8BD29]
+	(No symbol) [0x00E8D064]
+	GetHandleVerifier [0x012FB143+3215603]
+	GetHandleVerifier [0x013122BA+3310186]
+	GetHandleVerifier [0x0130C4D2+3286146]
+	GetHandleVerifier [0x01089C80+654384]
+	(No symbol) [0x00F845BD]
+	(No symbol) [0x00F814A8]
+	(No symbol) [0x00F81647]
+	(No symbol) [0x00F73D20]
+	BaseThreadInitThunk [0x76675D49+25]
+	RtlInitializeExceptionChain [0x778DCDEB+107]
+	RtlGetAppContainerNamedObjectPath [0x778DCD71+561]
+
+2025-02-24 20:19:01,012 - INFO - Successfully extracted text from resume.
+2025-02-24 20:19:01,014 - INFO - ====== WebDriver manager ======
+2025-02-24 20:19:02,002 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:19:02,131 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:19:02,177 - INFO - Driver [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126\chromedriver-win32/chromedriver.exe] found in cache
+2025-02-24 20:19:05,994 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level
+2025-02-24 20:19:16,334 - ERROR - Error searching LinkedIn: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00FF0283+25139]
+	(No symbol) [0x00F7B234]
+	(No symbol) [0x00E504A3]
+	(No symbol) [0x00E98338]
+	(No symbol) [0x00E9868B]
+	(No symbol) [0x00EE0F62]
+	(No symbol) [0x00EBCF84]
+	(No symbol) [0x00EDE6E1]
+	(No symbol) [0x00EBCD36]
+	(No symbol) [0x00E8BD29]
+	(No symbol) [0x00E8D064]
+	GetHandleVerifier [0x012FB143+3215603]
+	GetHandleVerifier [0x013122BA+3310186]
+	GetHandleVerifier [0x0130C4D2+3286146]
+	GetHandleVerifier [0x01089C80+654384]
+	(No symbol) [0x00F845BD]
+	(No symbol) [0x00F814A8]
+	(No symbol) [0x00F81647]
+	(No symbol) [0x00F73D20]
+	BaseThreadInitThunk [0x76675D49+25]
+	RtlInitializeExceptionChain [0x778DCDEB+107]
+	RtlGetAppContainerNamedObjectPath [0x778DCD71+561]
+Traceback (most recent call last):
+  File "C:\Users\sivap\Desktop\myagent1\main_function.py", line 90, in search_linkedin_jobs
+    WebDriverWait(driver, 10).until(
+  File "C:\Users\sivap\Desktop\myagent1\myenv\Lib\site-packages\selenium\webdriver\support\wait.py", line 146, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00FF0283+25139]
+	(No symbol) [0x00F7B234]
+	(No symbol) [0x00E504A3]
+	(No symbol) [0x00E98338]
+	(No symbol) [0x00E9868B]
+	(No symbol) [0x00EE0F62]
+	(No symbol) [0x00EBCF84]
+	(No symbol) [0x00EDE6E1]
+	(No symbol) [0x00EBCD36]
+	(No symbol) [0x00E8BD29]
+	(No symbol) [0x00E8D064]
+	GetHandleVerifier [0x012FB143+3215603]
+	GetHandleVerifier [0x013122BA+3310186]
+	GetHandleVerifier [0x0130C4D2+3286146]
+	GetHandleVerifier [0x01089C80+654384]
+	(No symbol) [0x00F845BD]
+	(No symbol) [0x00F814A8]
+	(No symbol) [0x00F81647]
+	(No symbol) [0x00F73D20]
+	BaseThreadInitThunk [0x76675D49+25]
+	RtlInitializeExceptionChain [0x778DCDEB+107]
+	RtlGetAppContainerNamedObjectPath [0x778DCD71+561]
+
+2025-02-24 20:23:02,874 - INFO - Successfully extracted text from resume.
+2025-02-24 20:23:02,877 - INFO - ====== WebDriver manager ======
+2025-02-24 20:23:03,878 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:23:03,926 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:23:03,984 - INFO - Driver [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126\chromedriver-win32/chromedriver.exe] found in cache
+2025-02-24 20:23:08,376 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level
+2025-02-24 20:23:38,578 - ERROR - Error searching LinkedIn: Message: 
+Traceback (most recent call last):
+  File "C:\Users\sivap\Desktop\myagent1\main_function.py", line 90, in search_linkedin_jobs
+    WebDriverWait(driver, 30).until(
+  File "C:\Users\sivap\Desktop\myagent1\myenv\Lib\site-packages\selenium\webdriver\support\wait.py", line 146, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+2025-02-24 20:23:58,273 - INFO - Successfully extracted text from resume.
+2025-02-24 20:23:58,275 - INFO - ====== WebDriver manager ======
+2025-02-24 20:23:59,114 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:23:59,166 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 20:23:59,219 - INFO - Driver [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126\chromedriver-win32/chromedriver.exe] found in cache
+2025-02-24 20:24:03,520 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level
+2025-02-24 20:24:33,794 - ERROR - Error searching LinkedIn: Message: 
+Traceback (most recent call last):
+  File "C:\Users\sivap\Desktop\myagent1\main_function.py", line 90, in search_linkedin_jobs
+    WebDriverWait(driver, 30).until(
+  File "C:\Users\sivap\Desktop\myagent1\myenv\Lib\site-packages\selenium\webdriver\support\wait.py", line 146, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+

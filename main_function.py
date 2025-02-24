@@ -21,25 +21,18 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 load_dotenv()
 
-# Your OpenAI API key (or other LLM API key)
-os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]  # Your OpenAI API key (or other LLM API key)
+os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
 
-
-# Configure logging
-# Configure logging
-logging.basicConfig(filename="job_agent.log", level=logging.INFO, 
-
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+# Set up logging
+logging.basicConfig(filename="job_agent.log", level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logging.basicConfig(level=logging.DEBUG)
 
 def clean_job_description(job_description): 
     """Cleans up the job description text.""" 
 
-    # Remove HTML tags (if any)
     soup = BeautifulSoup(job_description, "html.parser")
     text = soup.get_text()
 
-    # Remove extra whitespace
     text = re.sub(r'\s+', ' ', text).strip()
 
     return text
@@ -77,13 +70,13 @@ def search_linkedin_jobs(job_title, job_location, experience_level="All", num_re
     driver_path = driver_manager.install()  # Install and get the path
     logging.debug(f"ChromeDriver path: {driver_path}")  # Log the path
 
-    service = Service(driver_path)  # Use the explicit path
+    service = Service(driver_path) 
     driver = webdriver.Chrome(service=service, options=chrome_options) # Ensure ChromeDriver is in your PATH
 
     search_query = f"{job_title} at {job_location}"
     linkedin_url = f"https://www.linkedin.com/jobs/search/?keywords={job_title}&location={job_location}"
 
-    if experience_level != "All":  # add experience level filter to the url
+    if experience_level != "All":  
 
          linkedin_url += f"&f_E={experience_level}"
 
@@ -92,7 +85,6 @@ def search_linkedin_jobs(job_title, job_location, experience_level="All", num_re
         driver.get(linkedin_url)
         logging.info(f"Searching LinkedIn with URL: {linkedin_url}")  # log the url
 
-        # Wait for results to load (adjust the timeout as needed)
         WebDriverWait(driver, 30).until(
             lambda driver: len(driver.find_elements(By.CLASS_NAME, "job-card-container")) >= num_results
         )
@@ -128,7 +120,6 @@ def get_job_description(job_link):
     try:
         driver.get(job_link)
 
-        # Wait for the description to load
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "jobs-description__content"))
         )
@@ -136,7 +127,7 @@ def get_job_description(job_link):
         description_element = driver.find_element(By.CLASS_NAME, "jobs-description__content")
         job_description = description_element.text
 
-        cleaned_description = clean_job_description(job_description) #clean the job description
+        cleaned_description = clean_job_description(job_description)
 
         return cleaned_description
 
@@ -173,7 +164,7 @@ def assess_job_fit(resume_text, job_description, job_title):
 
 def generate_cover_letter(resume_text, job_description, job_title, company_name):
     """Generates a customized cover letter using an LLM."""
-
+# Add chatgpt model
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.7)  # Adjust model and temperature 
 
 
@@ -207,9 +198,7 @@ def apply_to_job(job_link, cover_letter, resume_path, linkedin_profile_link):
     try:
         driver.get(linkedin_profile_link)
         driver.get(job_link)
-        # Add login logic here (if required)
 
-        # Find the "Apply" button (you'll need to inspect the page source)
         apply_button = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.CLASS_NAME, "jobs-apply-button"))  # example change if wrong
 
@@ -221,15 +210,12 @@ def apply_to_job(job_link, cover_letter, resume_path, linkedin_profile_link):
         #  - Upload the resume (using `send_keys` on the file input element)
         #  - Paste the cover letter
 
-        # Example of uploading resume (adjust the selector):
         upload_element = driver.find_element(By.ID, "resume-upload-input") #example
         upload_element.send_keys(resume_path)
 
-        # Example of pasting cover letter:
         cover_letter_textarea = driver.find_element(By.ID, "cover-letter-textarea") #example
         cover_letter_textarea.send_keys(cover_letter)
 
-        # Submit the application (find the submit button and click it)
         submit_button = driver.find_element(By.CLASS_NAME, "final-submit-button") #example
         submit_button.click()
 
@@ -256,9 +242,9 @@ def apply_for_jobs(resume_file, job_title, job_location, experience_level, appli
     with open(resume_path, "wb") as f:
         f.write(resume_file.read())
 
-    job_data = search_linkedin_jobs(job_title, job_location, experience_level, applications_per_day) #pass exp level to linkedin search
+    job_data = search_linkedin_jobs(job_title, job_location, experience_level, applications_per_day) 
 
-    job_count = 0  # Track the number of jobs applied to
+    job_count = 0  
 
     for job in job_data:
         if job_count >= applications_per_day:
@@ -269,19 +255,16 @@ def apply_for_jobs(resume_file, job_title, job_location, experience_level, appli
         apply_to_job(job["link"], cover_letter, resume_path, linkedin_profile_link)
 
         if job_description is not None:
-            # Assess job fit
             job_fit_assessment = assess_job_fit(resume_text, job_description, job["title"])
             st.write(f"Job Fit Assessment for {job['title']}: {job_fit_assessment}")
 
-            # Generate cover letter
             cover_letter = generate_cover_letter(resume_text, job_description, job["title"], job["company"])
             st.write(f"Cover Letter for {job['title']}:\n{cover_letter}")
 
-            # Apply to the job (using Selenium - the trickiest part)
             apply_to_job(job["link"], cover_letter, resume_path)
 
             job_count += 1  # Increment the counter
-            time.sleep(15)  # Rate limiting delay after each application
+            time.sleep(15)  
 
     # Clean up temporary file
     os.remove(resume_path)
@@ -289,7 +272,6 @@ def apply_for_jobs(resume_file, job_title, job_location, experience_level, appli
 # ------------------- User Interface (Streamlit) Code -------------------
 st.title("AI Job Application Agent")
 
-# Configuration Options
 st.sidebar.header("Configuration")
 
 job_title = st.sidebar.text_input("Desired Job Title/Keywords:", "Software Engineer, AI Developer")

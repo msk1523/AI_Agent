@@ -29,7 +29,6 @@ logging.basicConfig(filename="job_agent.log", level=logging.INFO,
 logging.basicConfig(level=logging.DEBUG)
 
 def clean_job_description(job_description):
-    """Cleans up the job description text."""
     # Remove HTML tags (if any)
     soup = BeautifulSoup(job_description, "html.parser")
     text = soup.get_text()
@@ -40,7 +39,6 @@ def clean_job_description(job_description):
     return text
 
 def validate_inputs(resume_file, job_title, job_location):
-    """Validates user inputs."""
     if not resume_file:
         st.error("Please upload a resume.")
         return False
@@ -53,7 +51,6 @@ def validate_inputs(resume_file, job_title, job_location):
     return True
 
 def extract_resume_text(resume_file):
-    """Extracts text from a PDF resume."""
     try:
         resume_text = extract_text(resume_file)
         logging.info("Successfully extracted text from resume.")
@@ -112,7 +109,6 @@ def search_linkedin_jobs(job_title, job_location, experience_level="All", num_re
         driver.quit()
 
 def get_job_description(job_link):
-    """Retrieves the full job description from the LinkedIn job page."""
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     service = Service(ChromeDriverManager().install())
@@ -122,7 +118,6 @@ def get_job_description(job_link):
     try:
         driver.get(job_link)
 
-        # Wait for the description to load
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "jobs-description__content"))
         )
@@ -130,7 +125,7 @@ def get_job_description(job_link):
         description_element = driver.find_element(By.CLASS_NAME, "jobs-description__content")
         job_description = description_element.text
 
-        cleaned_description = clean_job_description(job_description) #clean the job description
+        cleaned_description = clean_job_description(job_description)
 
         return cleaned_description
 
@@ -141,7 +136,6 @@ def get_job_description(job_link):
         driver.quit()
 
 def assess_job_fit(resume_text, job_description, job_title):
-    """Assesses how well the resume matches the job description using Gemini."""
 
     genai.configure(api_key=st.secrets["GEMINI_API_KEY"])  # Use Gemini API key
     model = genai.GenerativeModel('gemini-pro') #initialize the model
@@ -165,7 +159,6 @@ def assess_job_fit(resume_text, job_description, job_title):
     return response.text #return the generated content
 
 def generate_cover_letter(resume_text, job_description, job_title, company_name):
-    """Generates a customized cover letter using an LLM."""
 
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.7)  # Adjust model and temperature
 
@@ -189,8 +182,7 @@ def generate_cover_letter(resume_text, job_description, job_title, company_name)
     return cover_letter
 
 
-def apply_for_jobs(resume_file, job_title, job_location, experience_level, applications_per_day, run_time): #removed linked in profile
-    """Main function to orchestrate the job search and display results."""
+def apply_for_jobs(resume_file, job_title, job_location, experience_level, applications_per_day, run_time): 
 
     st.write(f"Running with configuration: Title={job_title}, Location={job_location}, Experience={experience_level}, Applications/Day={applications_per_day}, Run Time={run_time}")
 
@@ -206,7 +198,6 @@ def apply_for_jobs(resume_file, job_title, job_location, experience_level, appli
         st.info("No jobs found matching your criteria.")
         return
 
-    # Prepare data for display in a Streamlit table
     results = []
     for job in job_data:
         job_description = get_job_description(job["link"])
@@ -215,16 +206,13 @@ def apply_for_jobs(resume_file, job_title, job_location, experience_level, appli
             # Assess job fit
             job_fit_assessment = assess_job_fit(resume_text, job_description, job["title"])
 
-            # Generate cover letter (optional - you can comment this out if you just want the job list)
-            #cover_letter = generate_cover_letter(resume_text, job_description, job["title"], job["company"])
 
             results.append({
                 "Title": job["title"],
                 "Company": job["company"],
                 "Location": job["location"],
                 "Link": job["link"],
-                "Job Fit Assessment": job_fit_assessment #,  # Removed cover letter from the output, add assessment
-                #"Cover Letter": cover_letter  # Optionally include the cover letter
+                "Job Fit Assessment": job_fit_assessment 
             })
         else:
             results.append({
@@ -232,12 +220,10 @@ def apply_for_jobs(resume_file, job_title, job_location, experience_level, appli
                 "Company": job["company"],
                 "Location": job["location"],
                 "Link": job["link"],
-                "Job Fit Assessment": "Could not retrieve Job description" #,  # Removed cover letter from the output, add assessment
-                #"Cover Letter": cover_letter  # Optionally include the cover letter
+                "Job Fit Assessment": "Could not retrieve Job description" 
             })
 
 
-    # Display the results in a Streamlit table
     st.write("## Matching Jobs")
     st.table(results)
 

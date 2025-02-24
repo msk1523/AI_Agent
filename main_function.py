@@ -22,15 +22,19 @@ from webdriver_manager.chrome import ChromeDriverManager
 load_dotenv()
 
 # Your OpenAI API key (or other LLM API key)
-os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
+os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]  # Your OpenAI API key (or other LLM API key)
+
 
 # Configure logging
-logging.basicConfig(filename="job_agent.log", level=logging.INFO,
+# Configure logging
+logging.basicConfig(filename="job_agent.log", level=logging.INFO, 
+
                     format='%(asctime)s - %(levelname)s - %(message)s')
 logging.basicConfig(level=logging.DEBUG)
 
-def clean_job_description(job_description):
-    """Cleans up the job description text."""
+def clean_job_description(job_description): 
+    """Cleans up the job description text.""" 
+
     # Remove HTML tags (if any)
     soup = BeautifulSoup(job_description, "html.parser")
     text = soup.get_text()
@@ -79,13 +83,15 @@ def search_linkedin_jobs(job_title, job_location, experience_level="All", num_re
     search_query = f"{job_title} at {job_location}"
     linkedin_url = f"https://www.linkedin.com/jobs/search/?keywords={job_title}&location={job_location}"
 
-    if experience_level != "All": #add experience level filter to the url
+    if experience_level != "All":  # add experience level filter to the url
+
          linkedin_url += f"&f_E={experience_level}"
 
 
     try:
         driver.get(linkedin_url)
-        logging.info(f"Searching LinkedIn with URL: {linkedin_url}") #log the url
+        logging.info(f"Searching LinkedIn with URL: {linkedin_url}")  # log the url
+
         # Wait for results to load (adjust the timeout as needed)
         WebDriverWait(driver, 30).until(
             lambda driver: len(driver.find_elements(By.CLASS_NAME, "job-card-container")) >= num_results
@@ -104,7 +110,8 @@ def search_linkedin_jobs(job_title, job_location, experience_level="All", num_re
 
 
     except Exception as e:
-        st.error(f"Error searching LinkedIn: {e}")
+        st.error(f"Error searching LinkedIn: {e}") 
+
         logging.exception(f"Error searching LinkedIn: {e}") #log the error
         return []
     finally:
@@ -142,7 +149,8 @@ def get_job_description(job_link):
 def assess_job_fit(resume_text, job_description, job_title):
     """Assesses how well the resume matches the job description using Gemini."""
 
-    genai.configure(api_key=st.secrets["GEMINI_API_KEY"]) #Use Gemini API key
+    genai.configure(api_key=st.secrets["GEMINI_API_KEY"])  # Use Gemini API key
+
     model = genai.GenerativeModel('gemini-pro') #initialize the model
 
     prompt_template = """
@@ -166,7 +174,8 @@ def assess_job_fit(resume_text, job_description, job_title):
 def generate_cover_letter(resume_text, job_description, job_title, company_name):
     """Generates a customized cover letter using an LLM."""
 
-    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.7)  # Adjust model and temperature
+    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.7)  # Adjust model and temperature 
+
 
     prompt_template = """
     You are a professional cover letter writer.  Write a compelling cover letter for the following job applicant,
@@ -202,7 +211,8 @@ def apply_to_job(job_link, cover_letter, resume_path, linkedin_profile_link):
 
         # Find the "Apply" button (you'll need to inspect the page source)
         apply_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.CLASS_NAME, "jobs-apply-button")) #example change if wrong
+            EC.element_to_be_clickable((By.CLASS_NAME, "jobs-apply-button"))  # example change if wrong
+
         )
         apply_button.click()
 
@@ -233,7 +243,8 @@ def apply_to_job(job_link, cover_letter, resume_path, linkedin_profile_link):
 def apply_for_jobs(resume_file, job_title, job_location, experience_level, applications_per_day, run_time, linkedin_profile_link):
     """Main function to orchestrate the job application process."""
 
-    st.write(f"Running with configuration: Title={job_title}, Location={job_location}, Experience={experience_level}, Applications/Day={applications_per_day}, Run Time={run_time}") #debug
+    st.write(f"Running with configuration: Title={job_title}, Location={job_location}, Experience={experience_level}, Applications/Day={applications_per_day}, Run Time={run_time}")  # debug
+
     resume_text = extract_resume_text(resume_file)
 
     if resume_text is None:
@@ -294,7 +305,8 @@ resume_file = st.file_uploader("Upload your Resume (PDF)", type=["pdf"])
 if resume_file is not None:
     st.success("Resume uploaded successfully!")
     # Button to trigger the agent
-    if st.button("Start Applying!"):
+    if st.button("Start Applying!"): 
+
      if validate_inputs(resume_file, job_title, job_location):
          st.write("Agent started. Please wait...")
          apply_for_jobs(resume_file, job_title, job_location, experience_level, applications_per_day, run_time, linkedin_profile_link)  # Pass all config options

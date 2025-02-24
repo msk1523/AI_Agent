@@ -387,3 +387,17 @@ Traceback (most recent call last):
     raise TimeoutException(message, screen, stacktrace)
 selenium.common.exceptions.TimeoutException: Message: 
 
+2025-02-24 21:06:26,968 - INFO - Successfully extracted text from resume.
+2025-02-24 21:06:26,969 - INFO - ====== WebDriver manager ======
+2025-02-24 21:06:27,893 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 21:06:28,025 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-24 21:06:28,082 - INFO - Driver [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126\chromedriver-win32/chromedriver.exe] found in cache
+2025-02-24 21:06:32,426 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Remote, USA&f_E=Entry Level
+2025-02-24 21:07:02,470 - ERROR - Error searching LinkedIn: Message: 
+Traceback (most recent call last):
+  File "C:\Users\sivap\Desktop\myagent1\main_function.py", line 96, in search_linkedin_jobs
+    WebDriverWait(driver, 30).until(
+  File "C:\Users\sivap\Desktop\myagent1\myenv\Lib\site-packages\selenium\webdriver\support\wait.py", line 146, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+

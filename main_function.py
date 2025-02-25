@@ -19,6 +19,9 @@ import google.generativeai as genai
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
+
+
+
 load_dotenv()
 
 os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]

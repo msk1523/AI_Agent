@@ -88,7 +88,7 @@ def search_linkedin_jobs(job_title, job_location, experience_level="All", num_re
         driver.get(linkedin_url)
         logging.info(f"Searching LinkedIn with URL: {linkedin_url}")  # log the url
 
-        WebDriverWait(driver, 30).until(
+        WebDriverWait(driver, 60).until(
             lambda driver: all(
                 len(card.find_element(By.CLASS_NAME, "job-card-container__title").text) > 0
                 for card in driver.find_elements(By.CLASS_NAME, "job-card-container")[:num_results] #check only upto num_results

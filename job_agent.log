@@ -469,3 +469,21 @@ Traceback (most recent call last):
     raise TimeoutException(message, screen, stacktrace)
 selenium.common.exceptions.TimeoutException: Message: 
 
+2025-02-25 23:15:06,933 - INFO - Successfully extracted text from resume.
+2025-02-25 23:15:06,937 - INFO - ====== WebDriver manager ======
+2025-02-25 23:15:08,883 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-25 23:15:10,087 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-25 23:15:10,157 - INFO - Driver [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126\chromedriver-win32/chromedriver.exe] found in cache
+2025-02-25 23:15:16,105 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level
+2025-02-25 23:17:53,762 - INFO - Successfully extracted text from resume.
+2025-02-25 23:17:53,766 - INFO - ====== WebDriver manager ======
+2025-02-25 23:17:55,941 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-25 23:17:56,048 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-25 23:17:56,117 - INFO - Driver [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126\chromedriver-win32/chromedriver.exe] found in cache
+2025-02-25 23:18:01,957 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level
+2025-02-25 23:48:42,604 - INFO - Successfully extracted text from resume.
+2025-02-25 23:48:42,608 - INFO - ====== WebDriver manager ======
+2025-02-25 23:48:44,446 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-25 23:48:44,529 - INFO - Get LATEST chromedriver version for google-chrome
+2025-02-25 23:48:44,586 - INFO - Driver [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126\chromedriver-win32/chromedriver.exe] found in cache
+2025-02-25 23:48:50,018 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level

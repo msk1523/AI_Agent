@@ -6,7 +6,8 @@ import re
 import time
 import logging
 from pdfminer.high_level import extract_text
-from firecrawl import Crawler
+import firecrawl
+print(dir(firecrawl))
 import agno
 
 # Load environment variables
@@ -46,7 +47,7 @@ def search_jobs(job_title, job_location, num_results=5):
     """Uses Firecrawl to search for job listings."""
     search_query = f"{job_title} {job_location} site:linkedin.com/jobs"
     crawler = Crawler()
-    results = crawler.scrape(search_query, max_results=num_results)
+    results = firecrawl.scrape(search_query)
     
     job_data = []
     for result in results:

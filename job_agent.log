@@ -487,3 +487,4 @@ selenium.common.exceptions.TimeoutException: Message:
 2025-02-25 23:48:44,529 - INFO - Get LATEST chromedriver version for google-chrome
 2025-02-25 23:48:44,586 - INFO - Driver [C:\Users\sivap\.wdm\drivers\chromedriver\win64\133.0.6943.126\chromedriver-win32/chromedriver.exe] found in cache
 2025-02-25 23:48:50,018 - INFO - Searching LinkedIn with URL: https://www.linkedin.com/jobs/search/?keywords=Software Engineer, AI Developer&location=Bangalore&f_E=Entry Level
+2025-02-28 02:16:55,071 - INFO - Successfully extracted text from resume.

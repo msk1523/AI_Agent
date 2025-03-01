@@ -34,7 +34,7 @@ def clean_text(text):
     text = re.sub(r'\s+', ' ', text).strip()
     return text
 
-def validate_inputs(resume_file, job_title, job_location):
+def validate_inputs(resume_file, job_title, job_location, experience):
     """Validates user inputs."""
     if not resume_file:
         st.error("Please upload a resume.")
@@ -44,6 +44,9 @@ def validate_inputs(resume_file, job_title, job_location):
         return False
     if not job_location:
         st.error("Please enter a job location.")
+        return False
+    if not experience:
+        st.error("Please enter required experience")
         return False
     return True
 
@@ -59,9 +62,9 @@ def extract_resume_text(resume_file):
         return None
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
-def search_jobs(job_title, job_location, num_results=5):
+def search_jobs(job_title, job_location, experience, num_results=5):
     """Uses DuckDuckGoSearch to search for job listings with retry."""
-    search_query = f"{job_title} in {job_location} site:linkedin.com/jobs"
+    search_query = f"{job_title} in {job_location} with {experience} years of experience site:linkedin.com/jobs"
     try:
         ddgs = DDGS()  # Initialize DDGS
         results = list(ddgs.text(search_query, max_results=num_results))  # Use DDGS to search
@@ -95,7 +98,7 @@ def get_job_description(job_link):
         st.error(f"Error retrieving job description: {e}")
         return None
 
-def generate_tailored_resume(resume_text, job_description, job_title):
+def generate_tailored_resume(resume_text, job_description, job_title, experience):
     """Generates a tailored resume using the LaTeX template."""
 
     prompt = f"""
@@ -104,6 +107,7 @@ def generate_tailored_resume(resume_text, job_description, job_title):
     in the resume that are most relevant to the job description. Do not hallucinate. If the skill is not present do not include it.
     Here is the job title: {job_title}.
     Here is the job description: {job_description}.
+    Here is the experience needed: {experience}.
     Here is the applicant resume: {resume_text}.
 
     Provide the tailored resume details, experiences and project details.
@@ -137,9 +141,6 @@ def generate_tailored_resume(resume_text, job_description, job_title):
 \section*{Education}
 {education}
 
-\section*{Experience_Details}
-{Experience_Details}
-
 \section*{Projects}
 {projects}
 
@@ -159,7 +160,7 @@ def generate_tailored_resume(resume_text, job_description, job_title):
 """
 
     # Use try-except blocks for each regex extraction
-    article, summary, experience, education, Experience_Details, projects, technical_skills, soft_skills, certifications, achievements = "", "", "", "", "", "", "", "", "", ""
+    article, summary, experience, education, projects, technical_skills, soft_skills, certifications, achievements = "", "", "", "", "", "", "", "", ""
     try:
         article_match = re.search(r"Article:\s*(.*?)\s*Summary:", tailored_content, re.DOTALL)
         article = article_match.group(1).strip() if article_match else ""
@@ -170,11 +171,8 @@ def generate_tailored_resume(resume_text, job_description, job_title):
         experience_match = re.search(r"Experience:\s*(.*?)\s*Education:", tailored_content, re.DOTALL)
         experience = experience_match.group(1).strip() if experience_match else ""
 
-        education_match = re.search(r"Education:\s*(.*?)\s*Experience Details:", tailored_content, re.DOTALL)
+        education_match = re.search(r"Education:\s*(.*?)\s*Projects:", tailored_content, re.DOTALL)
         education = education_match.group(1).strip() if education_match else ""
-
-        Experience_Details_match = re.search(r"Experience Details:\s*(.*?)\s*Projects:", tailored_content, re.DOTALL)
-        Experience_Details = Experience_Details_match.group(1).strip() if Experience_Details_match else ""
 
         projects_match = re.search(r"Projects:\s*(.*?)\s*Technical Skills:", tailored_content, re.DOTALL)
         projects = projects_match.group(1).strip() if projects_match else ""
@@ -205,7 +203,6 @@ def generate_tailored_resume(resume_text, job_description, job_title):
             summary=summary,
             experience=experience,
             education=education,
-            Experience_Details = Experience_Details,
             projects=projects,
             technical_skills=technical_skills_list,
             soft_skills=soft_skills_list,
@@ -260,7 +257,7 @@ def generate_cover_letter(resume_text, job_description, job_title, company_name)
         logging.exception(f"Cover letter error: {e}")
         return "Error generating cover letter."
 
-def apply_for_jobs(resume_file, job_title, job_location, applications_per_day):
+def apply_for_jobs(resume_file, job_title, job_location, experience, applications_per_day):
     """Main function to orchestrate job applications."""
 
     st.write(f"Applying for: {job_title} in {job_location}")
@@ -272,7 +269,7 @@ def apply_for_jobs(resume_file, job_title, job_location, applications_per_day):
 
     job_data = []
     try:
-        job_data = search_jobs(job_title, job_location, applications_per_day)
+        job_data = search_jobs(job_title, job_location, experience, applications_per_day)
     except Exception as e:
         st.error(f"Failed to retrieve search results after multiple retries: {e}")
         return
@@ -281,7 +278,7 @@ def apply_for_jobs(resume_file, job_title, job_location, applications_per_day):
         job_description = get_job_description(job["link"])
         if job_description:
             # Generate the tailored resume
-            tailored_resume_latex = generate_tailored_resume(resume_text, job_description, job["title"])
+            tailored_resume_latex = generate_tailored_resume(resume_text, job_description, job["title"], experience)
             if tailored_resume_latex:
                 st.write("### Tailored Resume (LaTeX Code):")
                 st.code(tailored_resume_latex, language="latex")  # Display LaTeX code
@@ -305,10 +302,11 @@ st.sidebar.header("Configuration")
 
 job_title = st.sidebar.text_input("Job Title:", "Software Engineer")
 job_location = st.sidebar.text_input("Job Location:", "Remote")
+experience = st.sidebar.text_input("Experience:", "2 years")
 applications_per_day = st.sidebar.slider("Applications per Day:", 1, 20, 5)
 resume_file = st.file_uploader("Upload Resume (PDF)", type=["pdf"])
 
 if resume_file and st.button("Start Applying!"):
-    if validate_inputs(resume_file, job_title, job_location):
+    if validate_inputs(resume_file, job_title, job_location, experience):
         st.write("Starting the job application process...")
-        apply_for_jobs(resume_file, job_title, job_location, applications_per_day)
+        apply_for_jobs(resume_file, job_title, job_location, experience, applications_per_day)

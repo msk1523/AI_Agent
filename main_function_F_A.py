@@ -137,6 +137,9 @@ def generate_tailored_resume(resume_text, job_description, job_title):
 \section*{Education}
 {education}
 
+\section*{Experience_Details}
+{Experience_Details}
+
 \section*{Projects}
 {projects}
 
@@ -156,7 +159,7 @@ def generate_tailored_resume(resume_text, job_description, job_title):
 """
 
     # Use try-except blocks for each regex extraction
-    article, summary, experience, education, projects, technical_skills, soft_skills, certifications, achievements = "", "", "", "", "", "", "", "", ""
+    article, summary, experience, education, Experience_Details, projects, technical_skills, soft_skills, certifications, achievements = "", "", "", "", "", "", "", "", "", ""
     try:
         article_match = re.search(r"Article:\s*(.*?)\s*Summary:", tailored_content, re.DOTALL)
         article = article_match.group(1).strip() if article_match else ""
@@ -167,8 +170,11 @@ def generate_tailored_resume(resume_text, job_description, job_title):
         experience_match = re.search(r"Experience:\s*(.*?)\s*Education:", tailored_content, re.DOTALL)
         experience = experience_match.group(1).strip() if experience_match else ""
 
-        education_match = re.search(r"Education:\s*(.*?)\s*Projects:", tailored_content, re.DOTALL)
+        education_match = re.search(r"Education:\s*(.*?)\s*Experience Details:", tailored_content, re.DOTALL)
         education = education_match.group(1).strip() if education_match else ""
+
+        Experience_Details_match = re.search(r"Experience Details:\s*(.*?)\s*Projects:", tailored_content, re.DOTALL)
+        Experience_Details = Experience_Details_match.group(1).strip() if Experience_Details_match else ""
 
         projects_match = re.search(r"Projects:\s*(.*?)\s*Technical Skills:", tailored_content, re.DOTALL)
         projects = projects_match.group(1).strip() if projects_match else ""
@@ -199,6 +205,7 @@ def generate_tailored_resume(resume_text, job_description, job_title):
             summary=summary,
             experience=experience,
             education=education,
+            Experience_Details = Experience_Details,
             projects=projects,
             technical_skills=technical_skills_list,
             soft_skills=soft_skills_list,

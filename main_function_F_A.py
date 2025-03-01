@@ -8,15 +8,20 @@ import logging
 from pdfminer.high_level import extract_text
 #import firecrawl #Removed since it's not working
 #print(dir(firecrawl))
-import agno
-from duckduckgo_search import ddg
+#import agno #Removing agno
+from duckduckgo_search import DDGS  # Corrected import statement
+import google.generativeai as genai #Adding Gemini API
 
 load_dotenv()
 
 os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
 
+# Set up Gemini API
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+model = genai.GenerativeModel('gemini-pro')
+
 # Set up logging
-logging.basicConfig(filename="job_agent.log", level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename="job_agent.log", level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message.py")
 logging.basicConfig(level=logging.DEBUG)
 
 def clean_text(text):
@@ -52,7 +57,8 @@ def search_jobs(job_title, job_location, num_results=5):
     """Uses DuckDuckGoSearch to search for job listings."""
     search_query = f"{job_title} in {job_location} site:linkedin.com/jobs"
     try:
-        results = ddg(search_query, max_results=num_results)
+        ddgs = DDGS()  # Initialize DDGS
+        results = list(ddgs.text(search_query, max_results=num_results))  # Use DDGS to search
 
         job_data = []
         for result in results:
@@ -85,63 +91,70 @@ def get_job_description(job_link):
         return None
 
 def assess_job_fit(resume_text, job_description, job_title):
-    """Uses Agno to assess job fit."""
-    client = agno.Client(api_key=st.secrets["GEMINI_API_KEY"])
-    
+    """Uses Gemini to assess job fit."""
+
     prompt = f"""
     You are an expert recruiter. Analyze the following:
-    
+
     Job Title: {job_title}
     Job Description: {job_description}
     Applicant Resume: {resume_text}
-    
+
     Provide a summary of how well the resume matches the job. Give a score (1-10) and suggest improvements.
     """
-    
-    response = client.generate(prompt)
-    return response
+
+    try:
+        response = model.generate_content(prompt)
+        return response.text
+    except Exception as e:
+        st.error(f"Error generating assessment: {e}")
+        logging.exception(f"Assessment error: {e}")
+        return "Error generating assessment."
 
 def generate_cover_letter(resume_text, job_description, job_title, company_name):
-    """Uses Agno to generate a customized cover letter."""
-    client = agno.Client(api_key=st.secrets["GEMINI_API_KEY"])
-    
+    """Uses Gemini to generate a customized cover letter."""
+
     prompt = f"""
     Write a compelling cover letter for the following applicant:
-    
+
     Job Title: {job_title}
     Company: {company_name}
     Job Description: {job_description}
     Resume: {resume_text}
-    
+
     The cover letter should be professional, tailored, and engaging.
     """
-    
-    response = client.generate(prompt)
-    return response
+    try:
+        response = model.generate_content(prompt)
+        return response.text
+    except Exception as e:
+        st.error(f"Error generating cover letter: {e}")
+        logging.exception(f"Cover letter error: {e}")
+        return "Error generating cover letter."
 
 def apply_for_jobs(resume_file, job_title, job_location, applications_per_day):
     """Main function to orchestrate job applications."""
-    
+
     st.write(f"Applying for: {job_title} in {job_location}")
-    
+
     resume_text = extract_resume_text(resume_file)
     if resume_text is None:
         st.error("Failed to extract text from resume.")
         return
-    
+
     job_data = search_jobs(job_title, job_location, applications_per_day)
-    
+
     for job in job_data:
         job_description = get_job_description(job["link"])
         if job_description:
             assessment = assess_job_fit(resume_text, job_description, job["title"])
             st.write(f"Assessment for {job['title']}:")
             st.write(assessment)
-            
+
             cover_letter = generate_cover_letter(resume_text, job_description, job["title"], "Unknown")
             st.write(f"Cover Letter for {job['title']}:")
             st.write(cover_letter)
-            
+
         time.sleep(15)  # Prevent rapid requests
 
 # ------------------- User Interface (Streamlit) -------------------

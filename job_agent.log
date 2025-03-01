@@ -490,3 +490,5 @@ selenium.common.exceptions.TimeoutException: Message:
 2025-02-28 02:16:55,071 - INFO - Successfully extracted text from resume.
 2025-02-28 02:28:36,589 - INFO - Successfully extracted text from resume.
 2025-03-01 14:41:28,509 - INFO - Successfully extracted text from resume.
+2025-03-01 14:52:23,669 - INFO - Successfully extracted text from resume.
+2025-03-01 14:52:24,713 - INFO - response: https://html.duckduckgo.com/html 200

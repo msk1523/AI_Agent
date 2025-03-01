@@ -6,11 +6,9 @@ import re
 import time
 import logging
 from pdfminer.high_level import extract_text
-#import firecrawl #Removed since it's not working
-#print(dir(firecrawl))
-#import agno #Removing agno
-from duckduckgo_search import DDGS  # Corrected import statement
-import google.generativeai as genai #Adding Gemini API
+from duckduckgo_search import DDGS
+import google.generativeai as genai
+from tenacity import retry, stop_after_attempt, wait_exponential  # Import tenacity
 
 load_dotenv()
 
@@ -18,7 +16,14 @@ os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
 
 # Set up Gemini API
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-model = genai.GenerativeModel('gemini-pro')
+# Try different model names
+try:
+    model = genai.GenerativeModel('gemini-2.0-flash') #Trying new model
+except:
+    try:
+        model = genai.GenerativeModel('gemini-1.5-flash-8b') #Trying new model
+    except:
+        model = genai.GenerativeModel('gemini-1.5-flash')
 
 # Set up logging
 logging.basicConfig(filename="job_agent.log", level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -53,8 +58,9 @@ def extract_resume_text(resume_file):
         logging.exception(f"Error extracting text from resume: {e}")
         return None
 
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
 def search_jobs(job_title, job_location, num_results=5):
-    """Uses DuckDuckGoSearch to search for job listings."""
+    """Uses DuckDuckGoSearch to search for job listings with retry."""
     search_query = f"{job_title} in {job_location} site:linkedin.com/jobs"
     try:
         ddgs = DDGS()  # Initialize DDGS
@@ -68,10 +74,9 @@ def search_jobs(job_title, job_location, num_results=5):
             })
         return job_data
     except Exception as e:
-        st.error(f"Error during search: {e}")
-        logging.exception(f"Search error: {e}")
-        return []  # Return an empty list in case of an error
-
+        st.warning(f"Rate limit encountered during search. Retrying...")
+        logging.warning(f"Rate limit encountered during search: {e}")
+        raise  # Re-raise the exception for tenacity to handle
 
 def get_job_description(job_link):
     """Placeholder for job description extraction.  Needs to be implemented with a scraping library if desired"""
@@ -89,6 +94,116 @@ def get_job_description(job_link):
     except Exception as e:
         st.error(f"Error retrieving job description: {e}")
         return None
+
+def generate_tailored_resume(resume_text, job_description, job_title):
+    """Generates a tailored resume using the LaTeX template."""
+
+    prompt = f"""
+    You are an expert resume tailor. You will be given a job description and a resume. 
+    You need to tailor the resume to match the job description. Focus on highlighting the skills and experiences 
+    in the resume that are most relevant to the job description. Do not hallucinate. If the skill is not present do not include it.
+    Here is the job title: {job_title}.
+    Here is the job description: {job_description}.
+    Here is the applicant resume: {resume_text}.
+
+    Provide the tailored resume details, experiences and project details.
+
+    """
+    try:
+        response = model.generate_content(prompt)
+        tailored_content = response.text
+    except Exception as e:
+        st.error(f"Error generating tailored resume content: {e}")
+        logging.exception(f"Tailored resume error: {e}")
+        return None  # Or a default message
+
+    # LaTeX Template (as provided)
+    latex_template = r"""
+\documentclass[10pt, letterpaper]{article}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{left=0.75in,right=0.75in,top=0.75in,bottom=0.75in}
+
+\begin{document}
+
+\section*{Summary}
+{summary}
+
+\section*{Experience}
+{experience}
+
+\section*{Education}
+{education}
+
+\section*{Projects}
+{projects}
+
+\section*{Technical Skills}
+{technical_skills}
+
+\section*{Soft Skills}
+{soft_skills}
+
+\section*{Certifications}
+{certifications}
+
+\section*{Achievements}
+{achievements}
+
+\end{document}
+"""
+
+    # Use try-except blocks for each regex extraction
+    summary, experience, education, projects, technical_skills, soft_skills, certifications, achievements = "", "", "", "", "", "", "", ""
+    try:
+        summary_match = re.search(r"Summary:\s*(.*?)\s*Experience:", tailored_content, re.DOTALL)
+        summary = summary_match.group(1).strip() if summary_match else ""
+
+        experience_match = re.search(r"Experience:\s*(.*?)\s*Education:", tailored_content, re.DOTALL)
+        experience = experience_match.group(1).strip() if experience_match else ""
+
+        education_match = re.search(r"Education:\s*(.*?)\s*Projects:", tailored_content, re.DOTALL)
+        education = education_match.group(1).strip() if education_match else ""
+
+        projects_match = re.search(r"Projects:\s*(.*?)\s*Technical Skills:", tailored_content, re.DOTALL)
+        projects = projects_match.group(1).strip() if projects_match else ""
+
+        technical_skills_match = re.search(r"Technical Skills:\s*(.*?)\s*Soft Skills:", tailored_content, re.DOTALL)
+        technical_skills = technical_skills_match.group(1).strip() if technical_skills_match else ""
+
+        soft_skills_match = re.search(r"Soft Skills:\s*(.*?)\s*Certifications:", tailored_content, re.DOTALL)
+        soft_skills = soft_skills_match.group(1).strip() if soft_skills_match else ""
+
+        certifications_match = re.search(r"Certifications:\s*(.*?)\s*Achievements:", tailored_content, re.DOTALL)
+        certifications = certifications_match.group(1).strip() if certifications_match else ""
+
+        achievements_match = re.search(r"Achievements:\s*(.*)", tailored_content, re.DOTALL)
+        achievements = achievements_match.group(1).strip() if achievements_match else ""
+    except AttributeError as e:
+        st.error(f"Error extracting content with regex: {e}")
+        return None
+
+    # Format technical skills and soft skills into LaTeX lists
+    technical_skills_list = "\\\\".join(skill.strip() for skill in re.split(r",\s*", technical_skills))
+    soft_skills_list = "\\\\".join(skill.strip() for skill in re.split(r",\s*", soft_skills))
+
+    # Populate the LaTeX template
+    try:
+        tailored_latex = latex_template.format(
+            summary=summary,
+            experience=experience,
+            education=education,
+            projects=projects,
+            technical_skills=technical_skills_list,
+            soft_skills=soft_skills_list,
+            certifications=certifications,
+            achievements=achievements,
+        )
+    except KeyError as e:
+        st.error(f"KeyError during LaTeX formatting: {e}.  Please check the output from Gemini and the LaTeX template.")
+        return None
+
+    return tailored_latex
 
 def assess_job_fit(resume_text, job_description, job_title):
     """Uses Gemini to assess job fit."""
@@ -142,18 +257,31 @@ def apply_for_jobs(resume_file, job_title, job_location, applications_per_day):
         st.error("Failed to extract text from resume.")
         return
 
-    job_data = search_jobs(job_title, job_location, applications_per_day)
+    job_data = []
+    try:
+        job_data = search_jobs(job_title, job_location, applications_per_day)
+    except Exception as e:
+        st.error(f"Failed to retrieve search results after multiple retries: {e}")
+        return
 
     for job in job_data:
         job_description = get_job_description(job["link"])
         if job_description:
-            assessment = assess_job_fit(resume_text, job_description, job["title"])
-            st.write(f"Assessment for {job['title']}:")
-            st.write(assessment)
+            # Generate the tailored resume
+            tailored_resume_latex = generate_tailored_resume(resume_text, job_description, job["title"])
+            if tailored_resume_latex:
+                st.write("### Tailored Resume (LaTeX Code):")
+                st.code(tailored_resume_latex, language="latex")  # Display LaTeX code
 
-            cover_letter = generate_cover_letter(resume_text, job_description, job["title"], "Unknown")
-            st.write(f"Cover Letter for {job['title']}:")
-            st.write(cover_letter)
+                assessment = assess_job_fit(resume_text, job_description, job["title"])
+                st.write(f"Assessment for {job['title']}:")
+                st.write(assessment)
+
+                cover_letter = generate_cover_letter(resume_text, job_description, job["title"], "Unknown")
+                st.write(f"Cover Letter for {job['title']}:")
+                st.write(cover_letter)
+            else:
+                st.error("Failed to generate tailored resume.")
 
         time.sleep(15)  # Prevent rapid requests
 

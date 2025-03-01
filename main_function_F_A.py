@@ -125,6 +125,8 @@ def generate_tailored_resume(resume_text, job_description, job_title):
 \geometry{left=0.75in,right=0.75in,top=0.75in,bottom=0.75in}
 
 \begin{document}
+\section*{article}
+{article}
 
 \section*{Summary}
 {summary}
@@ -154,8 +156,11 @@ def generate_tailored_resume(resume_text, job_description, job_title):
 """
 
     # Use try-except blocks for each regex extraction
-    summary, experience, education, projects, technical_skills, soft_skills, certifications, achievements = "", "", "", "", "", "", "", ""
+    article, summary, experience, education, projects, technical_skills, soft_skills, certifications, achievements = "", "", "", "", "", "", "", "", ""
     try:
+        article_match = re.search(r"Article:\s*(.*?)\s*Summary:", tailored_content, re.DOTALL)
+        article = article_match.group(1).strip() if article_match else ""
+
         summary_match = re.search(r"Summary:\s*(.*?)\s*Experience:", tailored_content, re.DOTALL)
         summary = summary_match.group(1).strip() if summary_match else ""
 
@@ -190,6 +195,7 @@ def generate_tailored_resume(resume_text, job_description, job_title):
     # Populate the LaTeX template
     try:
         tailored_latex = latex_template.format(
+            article = article,
             summary=summary,
             experience=experience,
             education=education,
